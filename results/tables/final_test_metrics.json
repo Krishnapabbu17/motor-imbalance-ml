@@ -1,0 +1,30 @@
+{
+  "audit": {
+    "assignment_file_sha256": "e87211a9c5a8bc50d94734bac42832e7d5a88c0202da731123f213552faf4e29",
+    "feature_table_sha256": "c083be913d5dd6800f7b7b25b9e0d84f436a9733d95b443c2633b970b6bf6a43",
+    "locked_config_sha256": "db43212dacaa509e525562bd80f044215ea46a74d26bb83d101c2e0a7b613b60",
+    "model_file_sha256": "547b2f94fe92c8e3de7cad01c1bcbb38c07ccdd2c029d4ac67caa61f3cba4bad",
+    "retuning_performed": false
+  },
+  "correct_trials": 7,
+  "correct_windows": 31,
+  "development_trial_count": 40,
+  "evaluation_completed_utc": "2026-08-05T04:30:18.805501+00:00",
+  "final_test_trial_count": 10,
+  "model": "random_forest",
+  "trial_level": {
+    "accuracy": 0.7,
+    "balanced_accuracy": 0.7,
+    "macro_f1": 0.7066666666666667,
+    "macro_precision": 0.8,
+    "macro_recall": 0.7
+  },
+  "window_count": 50,
+  "window_level": {
+    "accuracy": 0.62,
+    "balanced_accuracy": 0.6199999999999999,
+    "macro_f1": 0.6262087912087912,
+    "macro_precision": 0.7177380952380952,
+    "macro_recall": 0.6199999999999999
+  }
+}

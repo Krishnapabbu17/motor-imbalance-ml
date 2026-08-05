@@ -3,8 +3,8 @@
 This project studies MPU6050 vibration measurements from a small motor under
 `0.00 g`, `0.25 g`, `0.50 g`, `0.75 g`, and `1.00 g` imbalance conditions.
 
-The repository currently covers data organization, validation, and feature
-engineering. Model training is intentionally not run yet.
+The repository covers data organization, validation, feature engineering,
+leakage-safe model comparison, and a locked final-test evaluation.
 
 ## Dataset and structure
 
@@ -97,3 +97,17 @@ tuning are repeated inside the training folds. Results are saved to:
 
 The command fits a development candidate under `results/models/`, which remains
 local and ignored by Git. It does not evaluate the 10 reserved final-test trials.
+
+## One-time final evaluation
+
+After the model family, parameters, and selected features are locked, run once:
+
+```powershell
+python -m src.evaluate_models
+```
+
+This loads the saved development model and predicts only the 10 prespecified
+test trials. It performs no fitting, feature selection, or parameter tuning. It
+saves the final metrics, per-trial predictions, classification report, and
+confusion matrix under `results/`. The command refuses to run again when a final
+metrics file already exists, protecting the held-out result from repeated use.
