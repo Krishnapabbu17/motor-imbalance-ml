@@ -111,3 +111,22 @@ test trials. It performs no fitting, feature selection, or parameter tuning. It
 saves the final metrics, per-trial predictions, classification report, and
 confusion matrix under `results/`. The command refuses to run again when a final
 metrics file already exists, protecting the held-out result from repeated use.
+
+## Predict a new recording
+
+Prepare an approximately 10-second CSV with these columns:
+
+```text
+time,ax,ay,az
+```
+
+Then run:
+
+```powershell
+python -m src.predict path\to\new_motor_trial.csv
+```
+
+Add `--output results\predictions\new_motor_trial.json` to save the full five
+window votes and model scores. The predictor validates the recording, uses only
+the first five non-overlapping two-second windows, applies the exact training
+feature calculations, and never uses the file name as a model input.

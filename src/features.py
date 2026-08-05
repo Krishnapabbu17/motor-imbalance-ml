@@ -183,33 +183,68 @@ def build_window_feature_table(
 ) -> pd.DataFrame:
     """Create balanced, non-overlapping windows while retaining trial identity."""
     rows: list[dict[str, object]] = []
-    window_count = int(analysis_duration_ms // window_ms)
     for path in find_trial_files(data_dir):
         frame = pd.read_csv(path)
-        numeric_time = pd.to_numeric(frame["time"], errors="raise")
-        relative_time = numeric_time - float(numeric_time.iloc[0])
-        for window_id in range(window_count):
-            start_ms = window_id * window_ms
-            end_ms = start_ms + window_ms
-            mask = (relative_time >= start_ms) & (relative_time < end_ms)
-            segment = frame.loc[mask].copy()
-            if len(segment) < 4:
-                raise ValueError(f"Too few samples in window {window_id} of {path}")
-            segment_duration = float(segment["time"].iloc[-1] - segment["time"].iloc[0])
-            if segment_duration < 0.9 * window_ms:
-                raise ValueError(f"Incomplete window {window_id} of {path}")
-            rows.append(
-                {
-                    "trial_id": path.stem,
-                    "mass_g": mass_from_folder(path),
-                    "source_file": path.as_posix(),
-                    "feature_scope": "2_second_window",
-                    "window_id": window_id + 1,
-                    "window_start_ms": start_ms,
-                    "window_end_ms": end_ms,
-                    **extract_trial_features(segment),
-                }
+        window_features = extract_window_feature_table(
+            frame,
+            trial_id=path.stem,
+            source_file=path.as_posix(),
+            window_ms=window_ms,
+            analysis_duration_ms=analysis_duration_ms,
+        )
+        window_features.insert(1, "mass_g", mass_from_folder(path))
+        rows.extend(window_features.to_dict(orient="records"))
+    return pd.DataFrame(rows)
+
+
+def extract_window_feature_table(
+    frame: pd.DataFrame,
+    trial_id: str,
+    source_file: str,
+    window_ms: float = 2000.0,
+    analysis_duration_ms: float = 10000.0,
+) -> pd.DataFrame:
+    """Extract the same fixed windows used for training from one unlabeled trial."""
+    missing = [column for column in REQUIRED_COLUMNS if column not in frame.columns]
+    if missing:
+        raise ValueError(f"Missing required columns: {', '.join(missing)}")
+    numeric = frame.loc[:, REQUIRED_COLUMNS].apply(pd.to_numeric, errors="raise")
+    if numeric.isna().any().any():
+        raise ValueError("Trial contains missing numeric values.")
+    time = numeric["time"]
+    if len(time) < 4 or np.any(np.diff(time.to_numpy(dtype=float)) <= 0):
+        raise ValueError("Timestamps must be strictly increasing.")
+
+    relative_time = time - float(time.iloc[0])
+    window_count = int(analysis_duration_ms // window_ms)
+    if window_count <= 0 or window_count * window_ms != analysis_duration_ms:
+        raise ValueError("Analysis duration must contain a whole number of windows.")
+
+    rows: list[dict[str, object]] = []
+    for window_id in range(window_count):
+        start_ms = window_id * window_ms
+        end_ms = start_ms + window_ms
+        mask = (relative_time >= start_ms) & (relative_time < end_ms)
+        segment = numeric.loc[mask].copy()
+        if len(segment) < 4:
+            raise ValueError(f"Too few samples in window {window_id + 1}.")
+        segment_duration = float(segment["time"].iloc[-1] - segment["time"].iloc[0])
+        if segment_duration < 0.9 * window_ms:
+            raise ValueError(
+                f"Window {window_id + 1} is incomplete; provide an approximately "
+                "10-second recording."
             )
+        rows.append(
+            {
+                "trial_id": trial_id,
+                "source_file": source_file,
+                "feature_scope": "2_second_window",
+                "window_id": window_id + 1,
+                "window_start_ms": start_ms,
+                "window_end_ms": end_ms,
+                **extract_trial_features(segment),
+            }
+        )
     return pd.DataFrame(rows)
 
 
