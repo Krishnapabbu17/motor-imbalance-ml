@@ -1,0 +1,27 @@
+{
+  "best_params": {
+    "model__max_depth": 8,
+    "model__min_samples_leaf": 3,
+    "selector__max_features": 12
+  },
+  "development_inner_macro_f1": 0.6098228084634755,
+  "development_trial_count": 40,
+  "final_test_evaluated": false,
+  "model": "random_forest",
+  "random_seed": 42,
+  "reserved_test_trial_count": 10,
+  "selected_features": [
+    "magnitude_mean",
+    "ay_std",
+    "az_peak_abs_centered",
+    "ax_std",
+    "ay_median_abs_deviation",
+    "magnitude_std",
+    "magnitude_spectral_entropy",
+    "magnitude_spectral_centroid_hz",
+    "az_median_abs_deviation",
+    "ax_peak_to_peak",
+    "ay_peak_to_peak",
+    "axis_correlation_xz"
+  ]
+}

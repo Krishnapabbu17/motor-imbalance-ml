@@ -73,3 +73,27 @@ uses only development trials for feature screening, and saves:
 - `results/tables/development_class_summary.csv`
 
 It does not train or evaluate a machine-learning model.
+
+## Development model comparison
+
+After the EDA split is locked, run:
+
+```powershell
+python -m src.train_models
+```
+
+This compares logistic regression, RBF SVM, random forest, and gradient boosting
+with nested trial-grouped cross-validation. Feature selection and hyperparameter
+tuning are repeated inside the training folds. Results are saved to:
+
+- `results/model_selection_report.md`
+- `results/tables/model_cv_summary.csv`
+- `results/tables/model_cv_fold_metrics.csv`
+- `results/tables/development_oof_trial_predictions.csv`
+- `results/tables/development_oof_window_predictions.csv`
+- `results/tables/locked_model_config.json`
+- `results/figures/development_model_comparison.png`
+- `results/figures/development_winner_trial_confusion_matrix.png`
+
+The command fits a development candidate under `results/models/`, which remains
+local and ignored by Git. It does not evaluate the 10 reserved final-test trials.
