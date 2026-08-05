@@ -1,0 +1,78 @@
+column,role,use_for_future_model,description
+trial_id,metadata,False,Unique experimental trial identifier.
+mass_g,metadata,False,Measured imbalance class in grams; future prediction target.
+source_file,metadata,False,Relative path to the cleaned trial CSV.
+feature_scope,metadata,False,Full trial or non-overlapping 2-second window.
+window_id,metadata,False,One-based window number within a trial.
+window_start_ms,metadata,False,Window start relative to the first trial timestamp.
+window_end_ms,metadata,False,Window end relative to the first trial timestamp.
+sample_count,metadata,False,Number of measured samples in the segment.
+duration_ms,metadata,False,Elapsed time covered by the segment.
+median_sample_rate_hz,metadata,False,Sampling rate estimated from median timestamp spacing.
+axis_correlation_xy,feature,True,Pearson correlation between x and y acceleration.
+axis_correlation_xz,feature,True,Pearson correlation between x and z acceleration.
+axis_correlation_yz,feature,True,Pearson correlation between y and z acceleration.
+ax_mean,feature,True,Arithmetic mean of the signal.
+ax_std,feature,True,Population standard deviation of the signal.
+ax_rms_centered,feature,True,Root-mean-square after removing the signal mean.
+ax_mean_abs_centered,feature,True,Mean absolute deviation from the signal mean.
+ax_median_abs_deviation,feature,True,Median absolute deviation from the signal median.
+ax_peak_abs_centered,feature,True,Largest absolute deviation from the signal mean.
+ax_peak_to_peak,feature,True,Maximum signal value minus minimum signal value.
+ax_crest_factor,feature,True,Centered absolute peak divided by centered RMS.
+ax_skewness,feature,True,Third standardized moment of the signal.
+ax_excess_kurtosis,feature,True,Fourth standardized moment minus three.
+ax_dominant_frequency_hz,feature,True,Frequency with maximum non-DC spectral power.
+ax_spectral_centroid_hz,feature,True,Power-weighted mean frequency.
+ax_spectral_entropy,feature,True,Normalized spread of spectral power from 0 to 1.
+ax_relative_power_0_5_hz,feature,True,Fraction of non-DC power within the named frequency band.
+ax_relative_power_5_15_hz,feature,True,Fraction of non-DC power within the named frequency band.
+ax_relative_power_15_30_hz,feature,True,Fraction of non-DC power within the named frequency band.
+ay_mean,feature,True,Arithmetic mean of the signal.
+ay_std,feature,True,Population standard deviation of the signal.
+ay_rms_centered,feature,True,Root-mean-square after removing the signal mean.
+ay_mean_abs_centered,feature,True,Mean absolute deviation from the signal mean.
+ay_median_abs_deviation,feature,True,Median absolute deviation from the signal median.
+ay_peak_abs_centered,feature,True,Largest absolute deviation from the signal mean.
+ay_peak_to_peak,feature,True,Maximum signal value minus minimum signal value.
+ay_crest_factor,feature,True,Centered absolute peak divided by centered RMS.
+ay_skewness,feature,True,Third standardized moment of the signal.
+ay_excess_kurtosis,feature,True,Fourth standardized moment minus three.
+ay_dominant_frequency_hz,feature,True,Frequency with maximum non-DC spectral power.
+ay_spectral_centroid_hz,feature,True,Power-weighted mean frequency.
+ay_spectral_entropy,feature,True,Normalized spread of spectral power from 0 to 1.
+ay_relative_power_0_5_hz,feature,True,Fraction of non-DC power within the named frequency band.
+ay_relative_power_5_15_hz,feature,True,Fraction of non-DC power within the named frequency band.
+ay_relative_power_15_30_hz,feature,True,Fraction of non-DC power within the named frequency band.
+az_mean,feature,True,Arithmetic mean of the signal.
+az_std,feature,True,Population standard deviation of the signal.
+az_rms_centered,feature,True,Root-mean-square after removing the signal mean.
+az_mean_abs_centered,feature,True,Mean absolute deviation from the signal mean.
+az_median_abs_deviation,feature,True,Median absolute deviation from the signal median.
+az_peak_abs_centered,feature,True,Largest absolute deviation from the signal mean.
+az_peak_to_peak,feature,True,Maximum signal value minus minimum signal value.
+az_crest_factor,feature,True,Centered absolute peak divided by centered RMS.
+az_skewness,feature,True,Third standardized moment of the signal.
+az_excess_kurtosis,feature,True,Fourth standardized moment minus three.
+az_dominant_frequency_hz,feature,True,Frequency with maximum non-DC spectral power.
+az_spectral_centroid_hz,feature,True,Power-weighted mean frequency.
+az_spectral_entropy,feature,True,Normalized spread of spectral power from 0 to 1.
+az_relative_power_0_5_hz,feature,True,Fraction of non-DC power within the named frequency band.
+az_relative_power_5_15_hz,feature,True,Fraction of non-DC power within the named frequency band.
+az_relative_power_15_30_hz,feature,True,Fraction of non-DC power within the named frequency band.
+magnitude_mean,feature,True,Arithmetic mean of the signal.
+magnitude_std,feature,True,Population standard deviation of the signal.
+magnitude_rms_centered,feature,True,Root-mean-square after removing the signal mean.
+magnitude_mean_abs_centered,feature,True,Mean absolute deviation from the signal mean.
+magnitude_median_abs_deviation,feature,True,Median absolute deviation from the signal median.
+magnitude_peak_abs_centered,feature,True,Largest absolute deviation from the signal mean.
+magnitude_peak_to_peak,feature,True,Maximum signal value minus minimum signal value.
+magnitude_crest_factor,feature,True,Centered absolute peak divided by centered RMS.
+magnitude_skewness,feature,True,Third standardized moment of the signal.
+magnitude_excess_kurtosis,feature,True,Fourth standardized moment minus three.
+magnitude_dominant_frequency_hz,feature,True,Frequency with maximum non-DC spectral power.
+magnitude_spectral_centroid_hz,feature,True,Power-weighted mean frequency.
+magnitude_spectral_entropy,feature,True,Normalized spread of spectral power from 0 to 1.
+magnitude_relative_power_0_5_hz,feature,True,Fraction of non-DC power within the named frequency band.
+magnitude_relative_power_5_15_hz,feature,True,Fraction of non-DC power within the named frequency band.
+magnitude_relative_power_15_30_hz,feature,True,Fraction of non-DC power within the named frequency band.

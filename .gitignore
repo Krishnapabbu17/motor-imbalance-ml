@@ -4,9 +4,6 @@ __pycache__/
 .pytest_cache/
 .coverage
 
-data/processed/*
-!data/processed/.gitkeep
-
 results/models/*
 !results/models/.gitkeep
 

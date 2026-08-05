@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src.features import extract_trial_features
+from src.features import build_window_feature_table, extract_trial_features
 
 
 class FeatureTests(unittest.TestCase):
@@ -38,6 +38,26 @@ class FeatureTests(unittest.TestCase):
         features = extract_trial_features(frame)
 
         self.assertLess(abs(features["ax_dominant_frequency_hz"] - 10.0), 0.6)
+
+    def test_window_table_keeps_trial_identity(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        sample_rate_hz = 100.0
+        time_ms = np.arange(0.0, 10000.0, 1000.0 / sample_rate_hz)
+        signal = np.sin(2.0 * np.pi * 5.0 * time_ms / 1000.0)
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory) / "0.25g"
+            folder.mkdir()
+            pd.DataFrame(
+                {"time": time_ms, "ax": signal, "ay": signal, "az": signal + 9.8}
+            ).to_csv(folder / "trial_01.csv", index=False)
+            table = build_window_feature_table(Path(directory))
+
+        self.assertEqual(len(table), 5)
+        self.assertEqual(table["trial_id"].nunique(), 1)
+        self.assertEqual(table["window_id"].tolist(), [1, 2, 3, 4, 5])
+        self.assertTrue((table["mass_g"] == 0.25).all())
 
 
 if __name__ == "__main__":

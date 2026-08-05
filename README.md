@@ -1,72 +1,55 @@
 # Motor Imbalance Detection with Machine Learning
 
-This project studies whether vibration measurements from a low-cost MPU6050 accelerometer can classify controlled imbalance in a small DC motor.
+This project studies MPU6050 vibration measurements from a small motor under
+`0.00 g`, `0.25 g`, `0.50 g`, `0.75 g`, and `1.00 g` imbalance conditions.
 
-The planned experimental classes are `0.00 g`, `0.25 g`, `0.50 g`, `0.75 g`, and `1.00 g` of added mass at a fixed location on one propeller blade. Each trial is stored as a separate CSV file with these columns:
+The repository currently covers data organization, validation, and feature
+engineering. Model training is intentionally not run yet.
 
-```text
-time,ax,ay,az
-```
+## Dataset and structure
 
-- `time`: milliseconds
-- `ax`, `ay`, `az`: acceleration in m/s^2
-
-## Project structure
-
-```text
-data/raw/          Original trial CSV files, grouped by imbalance class
-data/processed/    Generated feature tables
-src/               Validation, feature extraction, modeling, and evaluation code
-tests/             Automated checks for important calculations
-results/figures/   Generated research figures
-results/tables/    Generated quality and model tables
-results/models/    Generated trained models
-```
-
-## Scientific rules
-
-1. Raw trial files are never modified.
-2. Each CSV represents one independent experimental trial.
-3. Individual sensor rows from the same trial are never split between training and testing.
-4. Preprocessing and feature scaling are fitted using training data only.
-5. Generated and experimental data must never be mixed.
-
-## Data layout
-
-Place the final experimental CSV files here:
+The authoritative workbook contains cleaned, real experimental sensor data: 50
+trials, with 10 trials at each imbalance level. Organization does not replace or
+extend the measured acceleration readings.
 
 ```text
-data/raw/0.00g/
-data/raw/0.25g/
-data/raw/0.50g/
-data/raw/0.75g/
-data/raw/1.00g/
+data/source/       Authoritative cleaned experimental workbook
+data/cleaned/      One measurement-preserving CSV per trial and class
+data/processed/    Trial manifest and generated feature tables
+src/               Preparation, validation, and feature code
+tests/             Automated calculation checks
+results/tables/    Validation reports
 ```
 
-Use descriptive names such as `mass_0.25g_trial_03.csv`.
+Each trial CSV contains `time,ax,ay,az`. `time` is the original timestamp in
+milliseconds; the acceleration columns retain the cleaned MPU6050 measurements.
 
-## Setup
+## Feature tables
 
-Create and activate a Python virtual environment, then install the dependencies:
+- `trial_features.csv`: one row per full experimental trial.
+- `window_features_2s.csv`: five balanced, non-overlapping two-second windows per
+  trial (250 total), recommended for future modeling.
+- `feature_dictionary.csv`: meaning and intended role of every column.
+
+Features cover vibration amplitude, distribution shape, cross-axis correlation,
+dominant frequency, spectral centroid, spectral entropy, and relative spectral
+power in 0–5 Hz, 5–15 Hz, and 15–30 Hz bands.
+
+## Scientific safeguards
+
+1. The authoritative cleaned workbook is preserved unchanged.
+2. Future train/test splits must be grouped by `trial_id`.
+3. `mass_g` is the future prediction target, not an input feature.
+4. File names, sample counts, durations, and sampling rate are metadata.
+5. Scaling and feature selection must be fitted only on training trials.
+
+## Reproduce preparation
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-```
-
-## Run the pipeline
-
-```powershell
+python -m src.prepare_data
 python -m src.run_pipeline
-```
-
-The pipeline validates every trial, creates a trial-level feature table, compares several classical machine-learning models, and saves results under `results/`.
-
-## Run the tests
-
-```powershell
 python -m unittest discover -s tests -v
 ```
 
-The repository currently contains the software foundation only. Final model results should not be reported until the replacement experimental trials have been collected and validated.
+`src.run_pipeline` stops after feature generation and does not train a model.
