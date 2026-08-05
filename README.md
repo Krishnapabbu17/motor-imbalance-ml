@@ -130,3 +130,22 @@ Add `--output results\predictions\new_motor_trial.json` to save the full five
 window votes and model scores. The predictor validates the recording, uses only
 the first five non-overlapping two-second windows, applies the exact training
 feature calculations, and never uses the file name as a model input.
+
+## Local web interface
+
+Install the project requirements, then start the interface from the repository
+root:
+
+```powershell
+python -m pip install -r requirements.txt
+python app.py
+```
+
+The app opens in the default browser. Choose an approximately 10-second CSV,
+press **Predict imbalance**, and review the overall result and five window votes.
+It binds only to `127.0.0.1` with public sharing disabled, so the interface is
+available only on the computer running it.
+
+On Windows, you can instead double-click `start_app.bat`. The first launch sets
+up the local Python environment and installs the requirements; later launches
+open the interface directly.

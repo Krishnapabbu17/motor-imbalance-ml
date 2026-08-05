@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
@@ -37,6 +38,10 @@ def _load_locked_model(model_path: Path, config_path: Path):
     if not config_path.is_file():
         raise FileNotFoundError(f"Locked model configuration is missing: {config_path}")
     config = json.loads(config_path.read_text(encoding="utf-8"))
+    # The locked artifact was created with `python -m src.train_models`, so pickle
+    # recorded this custom selector under __main__. Expose the identical class
+    # there when loading without changing or reserializing the evaluated model.
+    setattr(sys.modules["__main__"], "EffectSizeCorrelationSelector", EffectSizeCorrelationSelector)
     model = joblib.load(model_path)
     selected = list(model.named_steps["selector"].selected_features_)
     if selected != list(config["selected_features"]):
