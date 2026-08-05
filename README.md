@@ -53,3 +53,23 @@ python -m unittest discover -s tests -v
 ```
 
 `src.run_pipeline` stops after feature generation and does not train a model.
+
+## Exploratory analysis
+
+Run the leakage-safe EDA after feature generation:
+
+```powershell
+python -m src.eda
+```
+
+This command locks two complete trials per class as the untouched final test set,
+uses only development trials for feature screening, and saves:
+
+- `data/splits/trial_assignments.csv`
+- `results/eda_report.md`
+- `results/figures/` signal, amplitude, frequency, ranking, and correlation plots
+- `results/tables/feature_screening.csv`
+- `results/tables/recommended_features.csv`
+- `results/tables/development_class_summary.csv`
+
+It does not train or evaluate a machine-learning model.
