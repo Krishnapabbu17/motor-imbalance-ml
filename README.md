@@ -6,6 +6,11 @@ This project studies MPU6050 vibration measurements from a small motor under
 The repository covers data organization, validation, feature engineering,
 leakage-safe model comparison, and a locked final-test evaluation.
 
+## Research publication
+
+This motor-imbalance and motor-fault detection research resulted in a published
+research paper in the American Journal of Student Research (AJOSR).
+
 ## Dataset and structure
 
 The authoritative workbook contains cleaned, real experimental sensor data: 50
